@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22773FAC1B80E73500FF1B2B /* CheapjackFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22773FAA1B80E73500FF1B2B /* CheapjackFile.swift */; };
+		22773FAD1B80E73500FF1B2B /* CheapjackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22773FAB1B80E73500FF1B2B /* CheapjackManager.swift */; };
 		AEB1F84D1A8B57FE00D1CFE4 /* Cheapjack.h in Headers */ = {isa = PBXBuildFile; fileRef = AEB1F84C1A8B57FE00D1CFE4 /* Cheapjack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AEB1F8531A8B57FE00D1CFE4 /* Cheapjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB1F8471A8B57FE00D1CFE4 /* Cheapjack.framework */; };
 		AEB1F85A1A8B57FE00D1CFE4 /* CheapjackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB1F8591A8B57FE00D1CFE4 /* CheapjackTests.swift */; };
-		AEB1F89B1A8B596D00D1CFE4 /* Cheapjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB1F89A1A8B596D00D1CFE4 /* Cheapjack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,13 +25,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22773FAA1B80E73500FF1B2B /* CheapjackFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheapjackFile.swift; sourceTree = "<group>"; };
+		22773FAB1B80E73500FF1B2B /* CheapjackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheapjackManager.swift; sourceTree = "<group>"; };
 		AEB1F8471A8B57FE00D1CFE4 /* Cheapjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cheapjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB1F84B1A8B57FE00D1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEB1F84C1A8B57FE00D1CFE4 /* Cheapjack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cheapjack.h; sourceTree = "<group>"; };
 		AEB1F8521A8B57FE00D1CFE4 /* CheapjackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CheapjackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB1F8581A8B57FE00D1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEB1F8591A8B57FE00D1CFE4 /* CheapjackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheapjackTests.swift; sourceTree = "<group>"; };
-		AEB1F89A1A8B596D00D1CFE4 /* Cheapjack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cheapjack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,8 +75,9 @@
 		AEB1F8491A8B57FE00D1CFE4 /* Cheapjack */ = {
 			isa = PBXGroup;
 			children = (
+				22773FAA1B80E73500FF1B2B /* CheapjackFile.swift */,
+				22773FAB1B80E73500FF1B2B /* CheapjackManager.swift */,
 				AEB1F84C1A8B57FE00D1CFE4 /* Cheapjack.h */,
-				AEB1F89A1A8B596D00D1CFE4 /* Cheapjack.swift */,
 				AEB1F84A1A8B57FE00D1CFE4 /* Supporting Files */,
 			);
 			path = Cheapjack;
@@ -161,7 +164,8 @@
 		AEB1F83E1A8B57FE00D1CFE4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Gurpartap Singh";
 				TargetAttributes = {
 					AEB1F8461A8B57FE00D1CFE4 = {
@@ -212,7 +216,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEB1F89B1A8B596D00D1CFE4 /* Cheapjack.swift in Sources */,
+				22773FAC1B80E73500FF1B2B /* CheapjackFile.swift in Sources */,
+				22773FAD1B80E73500FF1B2B /* CheapjackManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +261,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -332,6 +338,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -350,6 +357,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -368,6 +376,7 @@
 				);
 				INFOPLIST_FILE = CheapjackTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -381,6 +390,7 @@
 				);
 				INFOPLIST_FILE = CheapjackTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
