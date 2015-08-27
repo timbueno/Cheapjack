@@ -7,31 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22CACEDC1B8FC577001F494B /* Cheapjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C573981B8E8D100088E47E /* Cheapjack.framework */; };
+		22CACEDD1B8FC577001F494B /* Cheapjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22C573981B8E8D100088E47E /* Cheapjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AEB1F8721A8B58C300D1CFE4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB1F8711A8B58C300D1CFE4 /* AppDelegate.swift */; };
 		AEB1F8741A8B58C300D1CFE4 /* DownloadsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB1F8731A8B58C300D1CFE4 /* DownloadsTableViewCell.swift */; };
 		AEB1F8771A8B58C300D1CFE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEB1F8751A8B58C300D1CFE4 /* Main.storyboard */; };
 		AEB1F8791A8B58C300D1CFE4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEB1F8781A8B58C300D1CFE4 /* Images.xcassets */; };
 		AEB1F87C1A8B58C300D1CFE4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEB1F87A1A8B58C300D1CFE4 /* LaunchScreen.xib */; };
 		AEB1F89D1A8B5A3100D1CFE4 /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB1F89C1A8B5A3100D1CFE4 /* DownloadsViewController.swift */; };
-		AEB1F89F1A8B5AE100D1CFE4 /* Cheapjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB1F89E1A8B5AE100D1CFE4 /* Cheapjack.framework */; };
-		AEB1F8A11A8B5B2C00D1CFE4 /* Cheapjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = AEB1F89E1A8B5AE100D1CFE4 /* Cheapjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		AEB1F8A01A8B5B1300D1CFE4 /* Copy Frameworks */ = {
+		22CACEDE1B8FC577001F494B /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AEB1F8A11A8B5B2C00D1CFE4 /* Cheapjack.framework in Copy Frameworks */,
+				22CACEDD1B8FC577001F494B /* Cheapjack.framework in Embed Frameworks */,
 			);
-			name = "Copy Frameworks";
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		22C573981B8E8D100088E47E /* Cheapjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Cheapjack.framework; path = "/Users/tim/Library/Developer/Xcode/DerivedData/Cheapjack-bthxvoovdrtvkpagdjxxmufkwzaz/Build/Products/Debug-iphoneos/Cheapjack.framework"; sourceTree = "<absolute>"; };
 		AEB1F86C1A8B58C300D1CFE4 /* Cheapjack-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cheapjack-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB1F8701A8B58C300D1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEB1F8711A8B58C300D1CFE4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -40,7 +41,6 @@
 		AEB1F8781A8B58C300D1CFE4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AEB1F87B1A8B58C300D1CFE4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		AEB1F89C1A8B5A3100D1CFE4 /* DownloadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
-		AEB1F89E1A8B5AE100D1CFE4 /* Cheapjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cheapjack.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Cheapjack-cbvlnqogbdcjbubhsnbenbjlkvsi/Build/Products/Debug-iphoneos/Cheapjack.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,7 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEB1F89F1A8B5AE100D1CFE4 /* Cheapjack.framework in Frameworks */,
+				22CACEDC1B8FC577001F494B /* Cheapjack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,8 +58,8 @@
 		AEB1F8631A8B58C300D1CFE4 = {
 			isa = PBXGroup;
 			children = (
+				22C573981B8E8D100088E47E /* Cheapjack.framework */,
 				AEB1F86E1A8B58C300D1CFE4 /* Cheapjack-Example */,
-				AEB1F89E1A8B5AE100D1CFE4 /* Cheapjack.framework */,
 				AEB1F86D1A8B58C300D1CFE4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -104,7 +104,7 @@
 				AEB1F8681A8B58C300D1CFE4 /* Sources */,
 				AEB1F8691A8B58C300D1CFE4 /* Frameworks */,
 				AEB1F86A1A8B58C300D1CFE4 /* Resources */,
-				AEB1F8A01A8B5B1300D1CFE4 /* Copy Frameworks */,
+				22CACEDE1B8FC577001F494B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -121,11 +121,13 @@
 		AEB1F8641A8B58C300D1CFE4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Gurpartap Singh";
 				TargetAttributes = {
 					AEB1F86B1A8B58C300D1CFE4 = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = AHKVBQHP6Z;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -218,6 +220,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -279,6 +282,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Cheapjack-cbvlnqogbdcjbubhsnbenbjlkvsi/Build/Products/Debug-iphoneos",
@@ -286,7 +291,9 @@
 				INFOPLIST_FILE = "Cheapjack-Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -294,6 +301,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Cheapjack-cbvlnqogbdcjbubhsnbenbjlkvsi/Build/Products/Debug-iphoneos",
@@ -301,7 +310,9 @@
 				INFOPLIST_FILE = "Cheapjack-Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

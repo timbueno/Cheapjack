@@ -64,7 +64,7 @@ class DownloadsTableViewCell: UITableViewCell {
         actionButton?.titleLabel?.text = downloadItem.action.rawValue
         actionButton?.setTitle(downloadItem.action.rawValue, forState: .Normal)
         
-        progressView?.progress = downloadItem.progress
+        progressView?.progress = Float(downloadItem.progress)
     }
     
 }

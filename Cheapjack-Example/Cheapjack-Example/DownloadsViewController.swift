@@ -40,7 +40,7 @@ class DownloadsTableViewCellItem {
     var stateLabelTitle: String
     var progressLabelTitle: String
     var action: DownloadsTableViewCellAction
-    var progress: Float
+    var progress: Double
     
     weak var cell: DownloadsTableViewCell?
     
@@ -70,7 +70,7 @@ class DownloadsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Cheapjack.delegate = self
+        CheapjackManager.sharedManager.delegate = self
     }
     
     @IBAction func addDownloadItem(sender: UIBarButtonItem) {
@@ -85,16 +85,16 @@ class DownloadsViewController: UIViewController {
         identifiers.append(identifier)
         
         let indexPathToInsert = NSIndexPath(forRow: downloadItems.count-1, inSection: 0)
-        tableView.insertRowsAtIndexPaths(Array<AnyObject>(arrayLiteral: indexPathToInsert), withRowAnimation: UITableViewRowAnimation.Automatic)
+        tableView.insertRowsAtIndexPaths([indexPathToInsert], withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     func removeDownloadItemWithIdentifier(identifier: CheapjackFile.Identifier) {
-        if let index = find(identifiers, identifier) {
+        if let index = self.identifiers.indexOf(identifier) {
             downloadItems.removeValueForKey(identifier)
             identifiers.removeAtIndex(index)
             
             let indexPathToDelete = NSIndexPath(forRow: index, inSection: 0)
-            tableView.deleteRowsAtIndexPaths(Array<AnyObject>(arrayLiteral: indexPathToDelete), withRowAnimation: UITableViewRowAnimation.Automatic)
+            tableView.deleteRowsAtIndexPaths([indexPathToDelete], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
     
@@ -112,7 +112,7 @@ extension DownloadsViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("DownloadsTableViewCellIdentifier") as DownloadsTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("DownloadsTableViewCellIdentifier") as! DownloadsTableViewCell
         
         cell.delegate = self
         cell.downloadItem = downloadItems[identifiers[indexPath.row]]
@@ -128,24 +128,24 @@ extension DownloadsViewController: DownloadsTableViewCellDelegate {
     func actionButtonPressed(sender: UIButton, inCell cell: DownloadsTableViewCell) {
         switch (sender.titleLabel?.text)! {
         case "Download":
-            Cheapjack.download(cell.downloadItem.url(), identifier: cell.downloadItem.identifier)
+            CheapjackManager.sharedManager.download(cell.downloadItem.url(), identifier: cell.downloadItem.identifier)
         case "Pause":
-            if Cheapjack.pause(cell.downloadItem.identifier) {
-                println("pausing")
+            if CheapjackManager.sharedManager.pause(cell.downloadItem.identifier) {
+                print("pausing")
             } else {
-                println("couldn't pause")
+                print("couldn't pause")
             }
         case "Resume":
-            if Cheapjack.resume(cell.downloadItem.identifier) {
-                println("resuming")
+            if CheapjackManager.sharedManager.resume(cell.downloadItem.identifier) {
+                print("resuming")
             } else {
-                println("couldn't resume")
+                print("couldn't resume")
             }
         case "Remove":
-            if Cheapjack.cancel(cell.downloadItem.identifier) {
-                println("cancelled")
+            if CheapjackManager.sharedManager.cancel(cell.downloadItem.identifier) {
+                print("cancelled")
             } else {
-                println("couldn't cancel")
+                print("couldn't cancel")
             }
             removeDownloadItemWithIdentifier(cell.downloadItem.identifier)
         default:
@@ -160,7 +160,7 @@ extension DownloadsViewController: CheapjackDelegate {
     
     func cheapjackManager(manager: CheapjackManager, didChangeState from: CheapjackFile.State, to: CheapjackFile.State, forFile file: CheapjackFile) {
         dispatch_async(dispatch_get_main_queue()) {
-            if let index = find(self.identifiers, file.identifier) {
+            if let index = self.identifiers.indexOf(file.identifier) {
                 let indexPath = NSIndexPath(forItem: index, inSection: 0)
                 if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? DownloadsTableViewCell {
                     switch to {
@@ -188,6 +188,8 @@ extension DownloadsViewController: CheapjackDelegate {
                         self.downloadItems[file.identifier]?.stateLabelTitle = "Unknown"
                         self.downloadItems[file.identifier]?.action = DownloadsTableViewCellAction.Download
                         break
+                    default:
+                        break
                     }
                     cell.downloadItem = self.downloadItems[file.identifier]
                 }
@@ -195,9 +197,9 @@ extension DownloadsViewController: CheapjackDelegate {
         }
     }
     
-    func cheapjackManager(manager: CheapjackManager, didUpdateProgress progress: Float, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64, forFile file: CheapjackFile) {
+    func cheapjackManager(manager: CheapjackManager, didUpdateProgress progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64, forFile file: CheapjackFile) {
         dispatch_async(dispatch_get_main_queue()) {
-            if let index = find(self.identifiers, file.identifier) {
+            if let index = self.identifiers.indexOf(file.identifier) {
                 let indexPath = NSIndexPath(forItem: index, inSection: 0)
                 if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? DownloadsTableViewCell {
                     let formattedWrittenBytes = NSByteCountFormatter.stringFromByteCount(totalBytesWritten, countStyle: .File)
@@ -216,6 +218,10 @@ extension DownloadsViewController: CheapjackDelegate {
         }
     }
     
+    func cheapjackManager(manager: CheapjackManager, didFinishDownloading withSession: NSURLSession, downloadTask: NSURLSessionDownloadTask, url: NSURL, forFile file: CheapjackFile) {
+        
+    }
+    
 }
 
 
@@ -227,7 +233,7 @@ extension DownloadsViewController: CheapjackFileDelegate {
         }
     }
     
-    func cheapjackFile(file: CheapjackFile, didUpdateProgress progress: Float, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+    func cheapjackFile(file: CheapjackFile, didUpdateProgress progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         dispatch_async(dispatch_get_main_queue()) {
             
         }
