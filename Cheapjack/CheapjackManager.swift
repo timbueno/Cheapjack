@@ -27,6 +27,9 @@ public class CheapjackManager: NSObject {
     public typealias DidFinishDownloadingBlock = (session: NSURLSession, downloadTask: NSURLSessionDownloadTask, url: NSURL, file: CheapjackFile) -> (Void)
     
     public weak var delegate: CheapjackDelegate?
+    
+    public var deleteFileAfterComplete = false
+    
     public var didFinishDownloadingBlock: CheapjackManager.DidFinishDownloadingBlock?
     
     public var files: Dictionary<CheapjackFile.Identifier, CheapjackFile>
@@ -184,6 +187,11 @@ extension CheapjackManager: NSURLSessionDownloadDelegate {
             if let didFinishDownloadingBlock = didFinishDownloadingBlock {
                 didFinishDownloadingBlock(session: session, downloadTask: downloadTask, url: location, file: file)
             }
+            
+            if deleteFileAfterComplete {
+                files.removeValueForKey(downloadTask.taskDescription!)
+            }
+            
         }
     }
     
@@ -208,7 +216,6 @@ extension CheapjackManager: NSURLSessionDownloadDelegate {
 extension CheapjackManager: NSURLSessionDelegate {
     
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        print("******** COMPLETE!!!!")
         if let error = error {
             print(error)
             delegate?.cheapjackManager(self, didReceiveError: error)
