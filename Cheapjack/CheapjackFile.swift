@@ -95,6 +95,8 @@ public class CheapjackFile: Equatable {
         }
     }
     
+    public var userInfo = Dictionary<String, AnyObject>()
+    
     // MARK: - CheapjackFile public read-only properties
     
     public private(set) var lastState: CheapjackFile.State
