@@ -48,9 +48,12 @@ public class CheapjackManager: NSObject {
     }
     
     // Helper method for starting a download for a new CheapjackFile instance.
-    public func download(url: NSURL, identifier: CheapjackFile.Identifier, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
+    public func download(url: NSURL, identifier: CheapjackFile.Identifier, userInfo: Dictionary<String, AnyObject>? = nil, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
         let listener = CheapjackFile.Listener(delegate: delegate, didChangeStateBlock: didChangeStateBlock, didUpdateProgressBlock: didUpdateProgressBlock)
         let file = CheapjackFile(identifier: identifier, url: url, listeners: [listener])
+        if let ui = userInfo {
+            file.userInfo = ui
+        }
         resume(file)
     }
     
