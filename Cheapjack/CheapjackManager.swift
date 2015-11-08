@@ -49,8 +49,13 @@ public class CheapjackManager: NSObject {
     
     // Helper method for starting a download for a new CheapjackFile instance.
     public func download(url: NSURL, identifier: CheapjackFile.Identifier, userInfo: Dictionary<String, AnyObject>? = nil, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
+        let request = NSURLRequest(URL: url)
+        download(request, identifier: identifier, userInfo: userInfo, delegate: delegate, didChangeStateBlock: didChangeStateBlock, didUpdateProgressBlock: didUpdateProgressBlock)
+    }
+    
+    public func download(request: NSURLRequest, identifier: CheapjackFile.Identifier, userInfo: Dictionary<String, AnyObject>? = nil, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
         let listener = CheapjackFile.Listener(delegate: delegate, didChangeStateBlock: didChangeStateBlock, didUpdateProgressBlock: didUpdateProgressBlock)
-        let file = CheapjackFile(identifier: identifier, url: url, listeners: [listener])
+        let file = CheapjackFile(identifier: identifier, request: request, listeners: [listener])
         if let ui = userInfo {
             file.userInfo = ui
         }
@@ -112,7 +117,7 @@ extension CheapjackManager {
             file.downloadTask = backgroundSession.downloadTaskWithResumeData(data)
         default:
             file.setState(.Waiting)
-            file.downloadTask = backgroundSession.downloadTaskWithURL(file.url)
+            file.downloadTask = backgroundSession.downloadTaskWithRequest(file.request)
         }
         file.downloadTask?.taskDescription = file.identifier
         file.downloadTask?.resume()
