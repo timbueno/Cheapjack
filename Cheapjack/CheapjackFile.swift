@@ -87,6 +87,8 @@ public class CheapjackFile: Equatable {
     internal weak var manager: CheapjackManager?
     public var identifier: CheapjackFile.Identifier
     public var url: NSURL
+    public var request: NSURLRequest
+    
     public var progress: Double {
         if totalBytesExpectedToWrite > 0 {
             return Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
@@ -120,15 +122,25 @@ public class CheapjackFile: Equatable {
     internal var listeners: [CheapjackFile.Listener]
     internal var downloadTask: NSURLSessionDownloadTask?
     
-    public init(identifier: CheapjackFile.Identifier, url: NSURL, listeners: [CheapjackFile.Listener]? = nil) {
+    
+    // MARK: - Initializers
+    
+    public init(identifier: CheapjackFile.Identifier, request: NSURLRequest, listeners: [CheapjackFile.Listener]? = nil) {
         self.identifier = identifier
-        self.url = url
+        self.url = request.URL!
+        self.request = request
         self.state = .Unknown
         self.lastState = .Unknown
         self.totalBytesWritten = 0
         self.totalBytesExpectedToWrite = 0
         self.listeners = listeners ?? Array<CheapjackFile.Listener>()
     }
+    
+    public convenience init(identifer: CheapjackFile.Identifier, url: NSURL, listeners: [CheapjackFile.Listener]? = nil) {
+        let request = NSURLRequest(URL: url)
+        self.init(identifier: identifer, request: request, listeners: listeners)
+    }
+    
     
     // MARK: - CheapjackFile private setter methods
     
