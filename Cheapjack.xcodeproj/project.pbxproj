@@ -170,6 +170,7 @@
 				TargetAttributes = {
 					AEB1F8461A8B57FE00D1CFE4 = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 0800;
 					};
 					AEB1F8511A8B57FE00D1CFE4 = {
 						CreatedOnToolsVersion = 6.2;
@@ -343,6 +344,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -362,6 +364,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
