@@ -10,8 +10,8 @@ import Foundation
 
 
 public protocol CheapjackFileDelegate: class {
-    func cheapjackFile(file: CheapjackFile, didChangeState from: CheapjackFile.State, to: CheapjackFile.State)
-    func cheapjackFile(file: CheapjackFile, didUpdateProgress progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
+    func cheapjackFile(_ file: CheapjackFile, didChangeState from: CheapjackFile.State, to: CheapjackFile.State)
+    func cheapjackFile(_ file: CheapjackFile, didUpdateProgress progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
 }
 
 
@@ -25,19 +25,19 @@ extension CheapjackFile.State: Equatable {
 
 public func ==(lhs: CheapjackFile.State, rhs: CheapjackFile.State) -> Bool {
     switch (lhs, rhs) {
-    case (let .Paused(data1), let .Paused(data2)):
+    case (let .paused(data1), let .paused(data2)):
         return data1 == data2
-    case (.Unknown, .Unknown):
+    case (.unknown, .unknown):
         return true
-    case (.Waiting, .Waiting):
+    case (.waiting, .waiting):
         return true
-    case (.Downloading, .Downloading):
+    case (.downloading, .downloading):
         return true
-    case (.Finished, .Finished):
+    case (.finished, .finished):
         return true
-    case (.Cancelled, .Cancelled):
+    case (.cancelled, .cancelled):
         return true
-    case (.Failed, .Failed):
+    case (.failed, .failed):
         return true
     default:
         return false
@@ -45,18 +45,18 @@ public func ==(lhs: CheapjackFile.State, rhs: CheapjackFile.State) -> Bool {
 }
 
 
-public class CheapjackFile: Equatable {
+open class CheapjackFile: Equatable {
     
     // A listener may implement either of delegate and blocks.
-    public class Listener {
+    open class Listener {
         
-        public typealias DidChangeStateBlock = (from: CheapjackFile.State, to: CheapjackFile.State) -> (Void)
-        public typealias DidUpdateProgressBlock = (progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) -> (Void)
+        public typealias DidChangeStateBlock = (_ from: CheapjackFile.State, _ to: CheapjackFile.State) -> (Void)
+        public typealias DidUpdateProgressBlock = (_ progress: Double, _ totalBytesWritten: Int64, _ totalBytesExpectedToWrite: Int64) -> (Void)
         
         
-        public weak var delegate: CheapjackFileDelegate?
-        public var didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock?
-        public var didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock?
+        open weak var delegate: CheapjackFileDelegate?
+        open var didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock?
+        open var didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock?
         
         public init(delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
             self.delegate = delegate
@@ -69,13 +69,13 @@ public class CheapjackFile: Equatable {
     
     // File states default to .Unknown
     public enum State {
-        case Unknown
-        case Waiting
-        case Downloading
-        case Paused(NSData)
-        case Finished
-        case Cancelled
-        case Failed
+        case unknown
+        case waiting
+        case downloading
+        case paused(Data)
+        case finished
+        case cancelled
+        case failed
     }
     
     
@@ -85,11 +85,11 @@ public class CheapjackFile: Equatable {
     // MARK: - CheapjackFile public properties
     
     internal weak var manager: CheapjackManager?
-    public var identifier: CheapjackFile.Identifier
-    public var url: NSURL
-    public var request: NSURLRequest
+    open var identifier: CheapjackFile.Identifier
+    open var url: URL
+    open var request: URLRequest
     
-    public var progress: Double {
+    open var progress: Double {
         if totalBytesExpectedToWrite > 0 {
             return Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
         } else {
@@ -97,12 +97,12 @@ public class CheapjackFile: Equatable {
         }
     }
     
-    public var userInfo = Dictionary<String, AnyObject>()
+    open var userInfo = Dictionary<String, AnyObject>()
     
     // MARK: - CheapjackFile public read-only properties
     
-    public private(set) var lastState: CheapjackFile.State
-    public private(set) var state: CheapjackFile.State {
+    open fileprivate(set) var lastState: CheapjackFile.State
+    open fileprivate(set) var state: CheapjackFile.State {
         willSet {
             lastState = state
         }
@@ -110,8 +110,8 @@ public class CheapjackFile: Equatable {
             notifyChangeStateListeners()
         }
     }
-    public private(set) var totalBytesExpectedToWrite: Int64
-    public private(set) var totalBytesWritten: Int64 {
+    open fileprivate(set) var totalBytesExpectedToWrite: Int64
+    open fileprivate(set) var totalBytesWritten: Int64 {
         didSet {
             notifyUpdateProgressListeners()
         }
@@ -120,49 +120,49 @@ public class CheapjackFile: Equatable {
     // MARK: - CheapjackFile private properties
     
     internal var listeners: [CheapjackFile.Listener]
-    internal var downloadTask: NSURLSessionDownloadTask?
+    internal var downloadTask: URLSessionDownloadTask?
     
     
     // MARK: - Initializers
     
-    public init(identifier: CheapjackFile.Identifier, request: NSURLRequest, listeners: [CheapjackFile.Listener]? = nil) {
+    public init(identifier: CheapjackFile.Identifier, request: URLRequest, listeners: [CheapjackFile.Listener]? = nil) {
         self.identifier = identifier
-        self.url = request.URL!
+        self.url = request.url!
         self.request = request
-        self.state = .Unknown
-        self.lastState = .Unknown
+        self.state = .unknown
+        self.lastState = .unknown
         self.totalBytesWritten = 0
         self.totalBytesExpectedToWrite = 0
         self.listeners = listeners ?? Array<CheapjackFile.Listener>()
     }
     
-    public convenience init(identifer: CheapjackFile.Identifier, url: NSURL, listeners: [CheapjackFile.Listener]? = nil) {
-        let request = NSURLRequest(URL: url)
+    public convenience init(identifer: CheapjackFile.Identifier, url: URL, listeners: [CheapjackFile.Listener]? = nil) {
+        let request = URLRequest(url: url)
         self.init(identifier: identifer, request: request, listeners: listeners)
     }
     
     
     // MARK: - CheapjackFile private setter methods
     
-    private func addListener(listener: CheapjackFile.Listener) {
+    fileprivate func addListener(_ listener: CheapjackFile.Listener) {
         listeners.append(listener)
     }
     
-    internal func setState(to: CheapjackFile.State) {
+    internal func setState(_ to: CheapjackFile.State) {
         state = to
     }
     
-    internal func setTotalBytesWritten(bytes: Int64) {
+    internal func setTotalBytesWritten(_ bytes: Int64) {
         totalBytesWritten = bytes
     }
     
-    internal func setTotalBytesExpectedToWrite(bytes: Int64) {
+    internal func setTotalBytesExpectedToWrite(_ bytes: Int64) {
         totalBytesExpectedToWrite = bytes
     }
     
     // MARK: - CheapjackFile private notify methods
     
-    private func notifyChangeStateListeners() {
+    fileprivate func notifyChangeStateListeners() {
         if let manager = manager {
             // CheapjackDelegate
             manager.delegate?.cheapjackManager(manager, didChangeState: lastState, to: state, forFile: self)
@@ -175,12 +175,12 @@ public class CheapjackFile: Equatable {
             
             // CheapjackFile.Listener.DidChangeStateBlock
             if let didChangeStateBlock = listener.didChangeStateBlock {
-                didChangeStateBlock(from: lastState, to: state)
+                didChangeStateBlock(lastState, state)
             }
         }
     }
     
-    private func notifyUpdateProgressListeners() {
+    fileprivate func notifyUpdateProgressListeners() {
         if let manager = manager {
             // CheapjackDelegate
             manager.delegate?.cheapjackManager(manager, didUpdateProgress: progress, totalBytesWritten: totalBytesWritten, totalBytesExpectedToWrite: totalBytesExpectedToWrite, forFile: self)
@@ -193,7 +193,7 @@ public class CheapjackFile: Equatable {
             
             // CheapjackFile.Listener.DidUpdateProgressBlock
             if let didUpdateProgressBlock = listener.didUpdateProgressBlock {
-                didUpdateProgressBlock(progress: progress, totalBytesWritten: totalBytesWritten, totalBytesExpectedToWrite: totalBytesExpectedToWrite)
+                didUpdateProgressBlock(progress, totalBytesWritten, totalBytesExpectedToWrite)
             }
         }
     }
