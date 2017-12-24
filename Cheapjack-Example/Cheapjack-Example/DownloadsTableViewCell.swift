@@ -47,7 +47,7 @@ class DownloadsTableViewCell: UITableViewCell {
     }
     
     @IBAction func actionButtonPressed(sender: UIButton) {
-        delegate?.actionButtonPressed(sender, inCell: self)
+        delegate?.actionButtonPressed(sender: sender, inCell: self)
     }
     
     override func prepareForReuse() {
@@ -62,7 +62,7 @@ class DownloadsTableViewCell: UITableViewCell {
         
         // Both are necessary for changing title without undesired animation.
         actionButton?.titleLabel?.text = downloadItem.action.rawValue
-        actionButton?.setTitle(downloadItem.action.rawValue, forState: .Normal)
+        actionButton?.setTitle(downloadItem.action.rawValue, for: .normal)
         
         progressView?.progress = Float(downloadItem.progress)
     }

@@ -191,6 +191,7 @@ extension CheapjackManager: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         if let file = files[downloadTask.taskDescription!] {
             file.setState(.finished)
+            print(file.url.absoluteString)
             delegate?.cheapjackManager(self, didFinishDownloading: session, downloadTask: downloadTask, url: location, forFile: file)
             if let didFinishDownloadingBlock = didFinishDownloadingBlock {
                 didFinishDownloadingBlock(session, downloadTask, location, file)
