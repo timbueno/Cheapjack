@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'Cheapjack/*'
+  s.source_files = 'Cheapjack/*.*'
   
   # s.resource_bundles = {
   #   'Cheapjack' => ['Cheapjack/Assets/*.png']
