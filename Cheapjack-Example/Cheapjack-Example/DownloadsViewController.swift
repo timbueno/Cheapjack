@@ -82,21 +82,21 @@ class DownloadsViewController: UIViewController {
     }
     @IBOutlet weak var pause: UIBarButtonItem!
     
-    var current = "pasue"
+    var current = "pasue all"
     @IBAction func pasueDownlaod(_ sender: UIBarButtonItem) {
-        if current == "pasue"{
+        if current == "pasue all"{
            //pasue all
             CheapjackManager.sharedManager.pauseAll()
 
-            current = "resume"
-            pause.title = "resume"
+            current = "resume all"
+            pause.title = "resume all"
 
         }else{
             //resume all
             
             CheapjackManager.sharedManager.resumeAll()
-            current = "pasue"
-            pause.title = "pasue"
+            current = "pasue all"
+            pause.title = "pasue all"
 
         }
     }
