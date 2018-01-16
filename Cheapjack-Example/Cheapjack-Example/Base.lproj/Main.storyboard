@@ -106,6 +106,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Downloads" id="7OQ-7Y-BSi">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="jrd-8y-Zrr">
+                            <connections>
+                                <action selector="pasueDownlaod:" destination="BYZ-38-t0r" id="aMH-Bd-uhw"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="nLT-3E-POD">
                             <connections>
                                 <action selector="addDownloadItemWithSender:" destination="BYZ-38-t0r" id="cyb-1Y-t76"/>
@@ -113,6 +118,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="pause" destination="jrd-8y-Zrr" id="0af-nh-HpM"/>
                         <outlet property="tableView" destination="fOX-qt-01o" id="JwE-Nc-0au"/>
                     </connections>
                 </viewController>

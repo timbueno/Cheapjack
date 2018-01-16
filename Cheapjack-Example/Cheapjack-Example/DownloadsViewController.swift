@@ -71,16 +71,35 @@ class DownloadsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         CheapjackManager.sharedManager.delegate = self
-
+        pause.title = "pasue"
     }
     
     @IBAction func addDownloadItem(sender: UIBarButtonItem) {
         let identifier = NSUUID().uuidString
-        let urlString = "https://archive.org/download/testmp3testfile/mpthreetest.mp3"
+        let urlString = "https://web.whatsapp.com/desktop/mac/files/WhatsApp.dmg"
         let downloadItem = DownloadsTableViewCellItem(identifier: identifier, urlString: urlString, infoLabelTitle: "mp3 test file from archive.org", stateLabelTitle: identifier, progressLabelTitle: "", action: DownloadsTableViewCellAction.Download)
         addDownloadItem(downloadItem: downloadItem, withIdentifier: identifier)
     }
+    @IBOutlet weak var pause: UIBarButtonItem!
     
+    var current = "pasue"
+    @IBAction func pasueDownlaod(_ sender: UIBarButtonItem) {
+        if current == "pasue"{
+           //pasue all
+            CheapjackManager.sharedManager.pauseAll()
+
+            current = "resume"
+            pause.title = "resume"
+
+        }else{
+            //resume all
+            
+            CheapjackManager.sharedManager.resumeAll()
+            current = "pasue"
+            pause.title = "pasue"
+
+        }
+    }
     func addDownloadItem(downloadItem: DownloadsTableViewCellItem, withIdentifier identifier: CheapjackFile.Identifier) {
         downloadItems[identifier] = downloadItem
         identifiers.append(identifier)
@@ -166,7 +185,7 @@ extension DownloadsViewController: CheapjackDelegate {
 
     
     
-    func cheapjackManager(_ manager: CheapjackManager, didChangeState from: CheapjackFile.State, to: CheapjackFile.State, forFile file: CheapjackFile) {
+    func cheapjackManager(_ manager: CheapjackManager, didChangeState from: State, to: State, forFile file: CheapjackFile) {
         DispatchQueue.main.async() {
             if let index = self.identifiers.index(of: file.identifier) {
                 let indexPath = IndexPath(row: index, section: 0)
@@ -237,7 +256,7 @@ extension DownloadsViewController: CheapjackDelegate {
 
 extension DownloadsViewController: CheapjackFileDelegate {
     
-    func cheapjackFile(_ file: CheapjackFile, didChangeState from: CheapjackFile.State, to: CheapjackFile.State) {
+    func cheapjackFile(_ file: CheapjackFile, didChangeState from: State, to: State) {
         DispatchQueue.main.async() {
             
         }

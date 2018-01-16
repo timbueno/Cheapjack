@@ -130,6 +130,8 @@ extension CheapjackManager {
         file.downloadTask?.cancel(byProducingResumeData: { resumeDataOrNil in
             if let data = resumeDataOrNil {
                 file.setState(.paused(data))
+                //save download item
+                self.storeDownloadItem(file: file)
                 print("paused")
             } else {
                 file.setState(.cancelled)
@@ -152,7 +154,7 @@ extension CheapjackManager {
 extension CheapjackManager {
     
     public func resumeAll() {
-        restoredDownloadItems()
+        files = restoredDownloadItems()
         for file in files.values {
             resume(file)
         }
@@ -162,9 +164,7 @@ extension CheapjackManager {
         for file in files.values {
             pause(file)
         }
-        
-        storeDemoDownloadItems()
-
+        storeDownloadItems()
     }
     
     public func cancelAll() {
@@ -173,20 +173,35 @@ extension CheapjackManager {
         }
     }
     
+    func storeDownloadItem(file:CheapjackFile) {
+        try? UserDefaults.standard.set(PropertyListEncoder().encode(file), forKey: file.identifier)
+        
+    }
+    func restoredDownloadItem(identifier:CheapjackFile.Identifier) -> CheapjackFile {
+        
+        let encoded = UserDefaults.standard.object(forKey: identifier) as! Data
+        let file = try! PropertyListDecoder().decode(CheapjackFile.self, from: encoded)
+        return file
+    }
     
-    func storeDemoDownloadItems() {
-        print(files.values.first?.state)
-
-        try? UserDefaults.standard.set(PropertyListEncoder().encode(files), forKey: "downloadItems")
-
+    func storeDownloadItems() {
+        //save the identifiers of files
+        try? UserDefaults.standard.set(PropertyListEncoder().encode(Array(files.keys)), forKey: "downloadItemKeys")
     }
 
-    func restoredDownloadItems() {
+    func restoredDownloadItems() -> [CheapjackFile.Identifier:CheapjackFile] {
 
-        let encoded = UserDefaults.standard.object(forKey: "downloadItems") as! Data
-         files = try! PropertyListDecoder().decode([CheapjackFile.Identifier: CheapjackFile].self, from: encoded)
-        print(files.values.first?.state)
-
+        let encoded = UserDefaults.standard.object(forKey: "downloadItemKeys") as! Data
+        let  filesKeys:[CheapjackFile.Identifier] = try! PropertyListDecoder().decode([CheapjackFile.Identifier].self, from: encoded)
+        
+        var savedFiles:[CheapjackFile.Identifier:CheapjackFile] = [CheapjackFile.Identifier:CheapjackFile]()
+        
+        for key in filesKeys {
+            let encoded = UserDefaults.standard.object(forKey: key) as! Data
+            let  file = try! PropertyListDecoder().decode(CheapjackFile.self, from: encoded)
+            savedFiles[key] = file
+        }
+        return savedFiles
     }
 
 }
