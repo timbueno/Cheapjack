@@ -72,10 +72,19 @@ class ViewController: UIViewController {
 * iOS 8.1 SDK+
 * Xcode 6.1+
 
+
+### Installation
+
+**CocoaPods:**
+
+Add the line `pod "Cheapjack"` to your `Podfile`
+
 ##### Manual Installation
 
+
+
 ```sh
-git clone https://github.com/Gurpartap/Cheapjack.git
+git clone https://github.com/dimohamdy/Cheapjack.git
 cd Cheapjack
 ```
 
