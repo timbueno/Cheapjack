@@ -10,7 +10,7 @@ import Foundation
 
 
 public protocol CheapjackFileDelegate: class {
-    func cheapjackFile(_ file: CheapjackFile, didChangeState from: CheapjackFile.State, to: CheapjackFile.State)
+    func cheapjackFile(_ file: CheapjackFile, didChangeState from: State, to: State)
     func cheapjackFile(_ file: CheapjackFile, didUpdateProgress progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
 }
 
@@ -20,10 +20,10 @@ public func ==(lhs: CheapjackFile, rhs: CheapjackFile) -> Bool {
 }
 
 
-extension CheapjackFile.State: Equatable {
+extension State: Equatable {
 }
 
-public func ==(lhs: CheapjackFile.State, rhs: CheapjackFile.State) -> Bool {
+public func ==(lhs: State, rhs: State) -> Bool {
     switch (lhs, rhs) {
     case (let .paused(data1), let .paused(data2)):
         return data1 == data2
@@ -45,12 +45,13 @@ public func ==(lhs: CheapjackFile.State, rhs: CheapjackFile.State) -> Bool {
 }
 
 
-open class CheapjackFile: Equatable {
-    
+
+open class CheapjackFile:Equatable,Codable {
+
     // A listener may implement either of delegate and blocks.
     open class Listener {
         
-        public typealias DidChangeStateBlock = (_ from: CheapjackFile.State, _ to: CheapjackFile.State) -> (Void)
+        public typealias DidChangeStateBlock = (_ from: State, _ to: State) -> (Void)
         public typealias DidUpdateProgressBlock = (_ progress: Double, _ totalBytesWritten: Int64, _ totalBytesExpectedToWrite: Int64) -> (Void)
         
         
@@ -65,29 +66,46 @@ open class CheapjackFile: Equatable {
         }
         
     }
-    
-    
-    // File states default to .Unknown
-    public enum State {
-        case unknown
-        case waiting
-        case downloading
-        case paused(Data)
-        case finished
-        case cancelled
-        case failed
+    private enum CodingKeys: String, CodingKey {
+        case identifier ,url,state,lastState,totalBytesWritten,totalBytesExpectedToWrite
+        
+    }
+
+    required public init(from decoder: Decoder) throws
+    {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        identifier = try values.decode(String.self, forKey: .identifier)
+         url = try values.decode(URL.self, forKey: .url)
+         state = try values.decode(State.self, forKey: .state)
+        lastState = try values.decode(State.self, forKey: .lastState)
+        totalBytesWritten = try values.decode(Int64.self, forKey: .totalBytesWritten)
+        totalBytesExpectedToWrite = try values.decode(Int64.self, forKey: .totalBytesExpectedToWrite)
+
+
     }
     
+    public func encode(to encoder: Encoder) throws
+    {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(identifier, forKey: .identifier)
+        try container.encode(url, forKey: .url)
+        try container.encode(state, forKey: .state)
+        try container.encode(lastState, forKey: .lastState)
+        try container.encode(totalBytesWritten, forKey: .totalBytesWritten)
+        try container.encode(totalBytesExpectedToWrite, forKey: .totalBytesExpectedToWrite)
+
+
+    }
     
     public typealias Identifier = String
     
     
     // MARK: - CheapjackFile public properties
     
-    internal weak var manager: CheapjackManager?
-    open var identifier: CheapjackFile.Identifier
-    open var url: URL
-    open var request: URLRequest
+    internal weak var manager: CheapjackManager? = nil
+    open var identifier: CheapjackFile.Identifier = ""
+    open var url: URL? = nil
+    open var request: URLRequest? = nil
     
     open var progress: Double {
         if totalBytesExpectedToWrite > 0 {
@@ -101,8 +119,8 @@ open class CheapjackFile: Equatable {
     
     // MARK: - CheapjackFile public read-only properties
     
-    open fileprivate(set) var lastState: CheapjackFile.State
-    open fileprivate(set) var state: CheapjackFile.State {
+    open fileprivate(set) var lastState: State = .unknown
+    open fileprivate(set) var state: State {
         willSet {
             lastState = state
         }
@@ -110,7 +128,7 @@ open class CheapjackFile: Equatable {
             notifyChangeStateListeners()
         }
     }
-    open fileprivate(set) var totalBytesExpectedToWrite: Int64
+    open fileprivate(set) var totalBytesExpectedToWrite: Int64 = 0
     open fileprivate(set) var totalBytesWritten: Int64 {
         didSet {
             notifyUpdateProgressListeners()
@@ -119,8 +137,8 @@ open class CheapjackFile: Equatable {
     
     // MARK: - CheapjackFile private properties
     
-    internal var listeners: [CheapjackFile.Listener]
-    internal var downloadTask: URLSessionDownloadTask?
+    internal var listeners: [CheapjackFile.Listener]  = [CheapjackFile.Listener]()
+    internal var downloadTask: URLSessionDownloadTask? = nil
     
     
     // MARK: - Initializers
@@ -148,7 +166,7 @@ open class CheapjackFile: Equatable {
         listeners.append(listener)
     }
     
-    internal func setState(_ to: CheapjackFile.State) {
+    internal func setState(_ to: State) {
         state = to
     }
     
@@ -198,4 +216,70 @@ open class CheapjackFile: Equatable {
         }
     }
     
+}
+
+// File states default to .Unknown
+public enum State {
+    case unknown
+    case waiting
+    case downloading
+    case paused(Data)
+    case finished
+    case cancelled
+    case failed
+}
+extension State: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case base, pausedData
+    }
+    private enum Base: String, Codable {
+        case   unknown,waiting,failed,cancelled, downloading, finished, paused
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let base = try container.decode(Base.self, forKey: .base)
+        
+        switch base {
+        case .cancelled:
+            self = .cancelled
+        case .downloading:
+            self = .downloading
+        case .finished:
+            self = .finished
+        case .paused:
+            let pausedData = try container.decode(Data.self, forKey: .pausedData)
+            self = .paused(pausedData)
+        case .unknown:
+            self = .unknown
+        case .waiting:
+            self = .waiting
+        case .failed:
+            self = .failed
+
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        switch self {
+        case .cancelled:
+            try container.encode(Base.cancelled, forKey: .base)
+        case .downloading:
+            try container.encode(Base.downloading, forKey: .base)
+        case .finished:
+            try container.encode(Base.finished, forKey: .base)
+        case .paused(let data):
+            try container.encode(Base.paused, forKey: .base)
+            try container.encode(data, forKey: .pausedData)
+        case .unknown:
+            try container.encode(Base.unknown, forKey: .base)
+        case .waiting:
+            try container.encode(Base.waiting, forKey: .base)
+        case .failed:
+            try container.encode(Base.failed, forKey: .base)
+
+        }
+    }
 }

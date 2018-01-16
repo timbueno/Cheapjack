@@ -10,7 +10,7 @@ import Foundation
 
 
 public protocol CheapjackDelegate: class {
-    func cheapjackManager(_ manager: CheapjackManager, didChangeState from: CheapjackFile.State, to: CheapjackFile.State, forFile file: CheapjackFile)
+    func cheapjackManager(_ manager: CheapjackManager, didChangeState from: State, to: State, forFile file: CheapjackFile)
     func cheapjackManager(_ manager: CheapjackManager, didUpdateProgress progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64, forFile file: CheapjackFile)
     func cheapjackManager(_ manager: CheapjackManager, didReceiveError error: NSError?)
     func cheapjackManager(_ manager: CheapjackManager, didFinishDownloading withSession: URLSession, downloadTask: URLSessionDownloadTask, url: URL, forFile file: CheapjackFile)
@@ -110,14 +110,17 @@ extension CheapjackManager {
         file.manager = self
         files[file.identifier] = file
         
-        
+        print(file.state)
         switch file.state {
         case .paused(let data):
             file.setState(.waiting)
             file.downloadTask = backgroundSession.downloadTask(withResumeData: data)
         default:
             file.setState(.waiting)
-            file.downloadTask = backgroundSession.downloadTask(with: file.request)
+            if file.request == nil {
+                file.request = URLRequest(url: file.url!)
+            }
+            file.downloadTask = backgroundSession.downloadTask(with: file.request!)
         }
         file.downloadTask?.taskDescription = file.identifier
         file.downloadTask?.resume()
@@ -149,6 +152,7 @@ extension CheapjackManager {
 extension CheapjackManager {
     
     public func resumeAll() {
+        restoredDownloadItems()
         for file in files.values {
             resume(file)
         }
@@ -158,6 +162,9 @@ extension CheapjackManager {
         for file in files.values {
             pause(file)
         }
+        
+        storeDemoDownloadItems()
+
     }
     
     public func cancelAll() {
@@ -166,6 +173,22 @@ extension CheapjackManager {
         }
     }
     
+    
+    func storeDemoDownloadItems() {
+        print(files.values.first?.state)
+
+        try? UserDefaults.standard.set(PropertyListEncoder().encode(files), forKey: "downloadItems")
+
+    }
+
+    func restoredDownloadItems() {
+
+        let encoded = UserDefaults.standard.object(forKey: "downloadItems") as! Data
+         files = try! PropertyListDecoder().decode([CheapjackFile.Identifier: CheapjackFile].self, from: encoded)
+        print(files.values.first?.state)
+
+    }
+
 }
 
 
@@ -174,7 +197,7 @@ extension CheapjackManager {
         files.removeValue(forKey: identifier)
     }
     
-    public func remove(_ filesWithState: CheapjackFile.State) {
+    public func remove(_ filesWithState: State) {
         var filesCopy = files
         for (identifier, file) in filesCopy {
             if file.state != filesWithState {
@@ -191,7 +214,7 @@ extension CheapjackManager: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         if let file = files[downloadTask.taskDescription!] {
             file.setState(.finished)
-            print(file.url.absoluteString)
+            print(file.url?.absoluteString)
             delegate?.cheapjackManager(self, didFinishDownloading: session, downloadTask: downloadTask, url: location, forFile: file)
             if let didFinishDownloadingBlock = didFinishDownloadingBlock {
                 didFinishDownloadingBlock(session, downloadTask, location, file)
@@ -206,7 +229,7 @@ extension CheapjackManager: URLSessionDownloadDelegate {
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         if let file = files[downloadTask.taskDescription!] {
-            if file.state != CheapjackFile.State.downloading {
+            if file.state != State.downloading {
                 file.setState(.downloading)
             }
             
@@ -247,3 +270,4 @@ extension CheapjackManager: URLSessionTaskDelegate {
     }
     
 }
+
