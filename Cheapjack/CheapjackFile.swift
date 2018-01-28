@@ -137,7 +137,7 @@ open class CheapjackFile:Equatable,Codable {
     
     // MARK: - CheapjackFile private properties
     
-    internal var listeners: [CheapjackFile.Listener]  = [CheapjackFile.Listener]()
+    open var listeners: [CheapjackFile.Listener]  = [CheapjackFile.Listener]()
     internal var downloadTask: URLSessionDownloadTask? = nil
     
     
@@ -162,7 +162,7 @@ open class CheapjackFile:Equatable,Codable {
     
     // MARK: - CheapjackFile private setter methods
     
-    fileprivate func addListener(_ listener: CheapjackFile.Listener) {
+    public func addListener(_ listener: CheapjackFile.Listener) {
         listeners.append(listener)
     }
     
