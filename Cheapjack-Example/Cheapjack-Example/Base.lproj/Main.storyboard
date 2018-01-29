@@ -33,8 +33,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfX-Rx-TDQ">
-                                                    <rect key="frame" x="501" y="13" width="91" height="38"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfX-Rx-TDQ">
+                                                    <rect key="frame" x="267" y="13" width="93" height="38"/>
                                                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -71,10 +71,13 @@
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="dfX-Rx-TDQ" secondAttribute="centerY" constant="-0.5" id="0V7-o2-b3c"/>
                                                 <constraint firstItem="IHc-do-aRW" firstAttribute="leading" secondItem="1WV-1U-859" secondAttribute="leadingMargin" id="2KX-AQ-XWM"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dbf-3c-82f" secondAttribute="trailing" constant="20" symbolic="YES" id="60O-wY-pUG"/>
                                                 <constraint firstAttribute="trailing" secondItem="kTI-1e-SgL" secondAttribute="trailing" id="98c-vx-gLj"/>
-                                                <constraint firstItem="dfX-Rx-TDQ" firstAttribute="trailing" secondItem="1WV-1U-859" secondAttribute="trailingMargin" id="Blz-Tc-vV6"/>
+                                                <constraint firstItem="dfX-Rx-TDQ" firstAttribute="leading" secondItem="dbf-3c-82f" secondAttribute="trailing" constant="74" id="HzB-4S-9U1"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="THP-c8-eXb" secondAttribute="trailingMargin" id="ayW-tO-scr"/>
                                                 <constraint firstItem="kTI-1e-SgL" firstAttribute="leading" secondItem="1WV-1U-859" secondAttribute="leading" id="ftI-FQ-Qcv"/>
                                                 <constraint firstItem="dbf-3c-82f" firstAttribute="centerY" secondItem="IHc-do-aRW" secondAttribute="centerY" id="jCg-6G-gJu"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dfX-Rx-TDQ" secondAttribute="trailing" constant="15" id="jmd-JH-tw9"/>
                                                 <constraint firstItem="dbf-3c-82f" firstAttribute="leading" secondItem="IHc-do-aRW" secondAttribute="trailing" constant="8" id="qhd-d3-HYR"/>
                                                 <constraint firstItem="IHc-do-aRW" firstAttribute="bottom" secondItem="1WV-1U-859" secondAttribute="bottomMargin" id="rJS-Ln-Mkp"/>
                                                 <constraint firstAttribute="bottom" secondItem="kTI-1e-SgL" secondAttribute="bottom" id="twU-EJ-UDG"/>

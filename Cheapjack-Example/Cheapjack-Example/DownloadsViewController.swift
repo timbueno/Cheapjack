@@ -70,10 +70,13 @@ class DownloadsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         CheapjackManager.sharedManager.delegate = self
         pause.title = "pasue"
     }
-    
     @IBAction func addDownloadItem(sender: UIBarButtonItem) {
         let identifier = NSUUID().uuidString
         let urlString = "https://web.whatsapp.com/desktop/mac/files/WhatsApp.dmg"

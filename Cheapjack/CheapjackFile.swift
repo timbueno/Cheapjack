@@ -47,7 +47,7 @@ public func ==(lhs: State, rhs: State) -> Bool {
 
 
 open class CheapjackFile:Equatable,Codable {
-
+    
     // A listener may implement either of delegate and blocks.
     open class Listener {
         
@@ -70,18 +70,18 @@ open class CheapjackFile:Equatable,Codable {
         case identifier ,url,state,lastState,totalBytesWritten,totalBytesExpectedToWrite
         
     }
-
+    
     required public init(from decoder: Decoder) throws
     {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         identifier = try values.decode(String.self, forKey: .identifier)
-         url = try values.decode(URL.self, forKey: .url)
-         state = try values.decode(State.self, forKey: .state)
+        url = try values.decode(URL.self, forKey: .url)
+        state = try values.decode(State.self, forKey: .state)
         lastState = try values.decode(State.self, forKey: .lastState)
         totalBytesWritten = try values.decode(Int64.self, forKey: .totalBytesWritten)
         totalBytesExpectedToWrite = try values.decode(Int64.self, forKey: .totalBytesExpectedToWrite)
-
-
+        
+        
     }
     
     public func encode(to encoder: Encoder) throws
@@ -93,8 +93,8 @@ open class CheapjackFile:Equatable,Codable {
         try container.encode(lastState, forKey: .lastState)
         try container.encode(totalBytesWritten, forKey: .totalBytesWritten)
         try container.encode(totalBytesExpectedToWrite, forKey: .totalBytesExpectedToWrite)
-
-
+        
+        
     }
     
     public typealias Identifier = String
@@ -106,6 +106,8 @@ open class CheapjackFile:Equatable,Codable {
     open var identifier: CheapjackFile.Identifier = ""
     open var url: URL? = nil
     open var request: URLRequest? = nil
+    var fileName : String? = nil
+    var directoryName : String? = nil
     
     open var progress: Double {
         if totalBytesExpectedToWrite > 0 {
@@ -137,13 +139,14 @@ open class CheapjackFile:Equatable,Codable {
     
     // MARK: - CheapjackFile private properties
     
-    internal var listeners: [CheapjackFile.Listener]  = [CheapjackFile.Listener]()
+    open var listeners: [CheapjackFile.Listener]  = [CheapjackFile.Listener]()
     internal var downloadTask: URLSessionDownloadTask? = nil
     
     
     // MARK: - Initializers
     
-    public init(identifier: CheapjackFile.Identifier, request: URLRequest, listeners: [CheapjackFile.Listener]? = nil) {
+    public init(identifier: CheapjackFile.Identifier, request: URLRequest, listeners: [CheapjackFile.Listener]? = nil,fileName: String? = nil ,
+                directoryName: String? = nil ) {
         self.identifier = identifier
         self.url = request.url!
         self.request = request
@@ -152,6 +155,8 @@ open class CheapjackFile:Equatable,Codable {
         self.totalBytesWritten = 0
         self.totalBytesExpectedToWrite = 0
         self.listeners = listeners ?? Array<CheapjackFile.Listener>()
+        self.fileName = fileName ?? identifier
+        self.directoryName = directoryName ??  "Doc"
     }
     
     public convenience init(identifer: CheapjackFile.Identifier, url: URL, listeners: [CheapjackFile.Listener]? = nil) {
@@ -162,7 +167,7 @@ open class CheapjackFile:Equatable,Codable {
     
     // MARK: - CheapjackFile private setter methods
     
-    fileprivate func addListener(_ listener: CheapjackFile.Listener) {
+    public func addListener(_ listener: CheapjackFile.Listener) {
         listeners.append(listener)
     }
     
@@ -203,7 +208,6 @@ open class CheapjackFile:Equatable,Codable {
             // CheapjackDelegate
             manager.delegate?.cheapjackManager(manager, didUpdateProgress: progress, totalBytesWritten: totalBytesWritten, totalBytesExpectedToWrite: totalBytesExpectedToWrite, forFile: self)
         }
-        
         // CheapjackFile.Listener
         for listener in listeners {
             // CheapjackFileDelegate
@@ -235,7 +239,7 @@ extension State: Codable {
     private enum Base: String, Codable {
         case   unknown,waiting,failed,cancelled, downloading, finished, paused
     }
-
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let base = try container.decode(Base.self, forKey: .base)
@@ -256,7 +260,7 @@ extension State: Codable {
             self = .waiting
         case .failed:
             self = .failed
-
+            
         }
     }
     
@@ -279,7 +283,7 @@ extension State: Codable {
             try container.encode(Base.waiting, forKey: .base)
         case .failed:
             try container.encode(Base.failed, forKey: .base)
-
+            
         }
     }
 }

@@ -48,14 +48,15 @@ open class CheapjackManager: NSObject {
     }
     
     // Helper method for starting a download for a new CheapjackFile instance.
-    open func download(_ url: URL, identifier: CheapjackFile.Identifier, userInfo: Dictionary<String, AnyObject>? = nil, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
+    open func download(_ url: URL,fileName: String? = nil,directoryName: String? = nil, identifier: CheapjackFile.Identifier, userInfo: Dictionary<String, AnyObject>? = nil, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
         let request = URLRequest(url: url)
-        download(request, identifier: identifier, userInfo: userInfo, delegate: delegate, didChangeStateBlock: didChangeStateBlock, didUpdateProgressBlock: didUpdateProgressBlock)
+        download(request,fileName: fileName,directoryName:directoryName, identifier: identifier, userInfo: userInfo, delegate: delegate, didChangeStateBlock: didChangeStateBlock, didUpdateProgressBlock: didUpdateProgressBlock)
     }
     
-    open func download(_ request: URLRequest, identifier: CheapjackFile.Identifier, userInfo: Dictionary<String, AnyObject>? = nil, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
+    open func download(_ request: URLRequest,fileName: String? = nil,directoryName: String? = nil,identifier: CheapjackFile.Identifier, userInfo: Dictionary<String, AnyObject>? = nil, delegate: CheapjackFileDelegate? = nil, didChangeStateBlock: CheapjackFile.Listener.DidChangeStateBlock? = nil, didUpdateProgressBlock: CheapjackFile.Listener.DidUpdateProgressBlock? = nil) {
         let listener = CheapjackFile.Listener(delegate: delegate, didChangeStateBlock: didChangeStateBlock, didUpdateProgressBlock: didUpdateProgressBlock)
-        let file = CheapjackFile(identifier: identifier, request: request, listeners: [listener])
+        let file = CheapjackFile(identifier: identifier, request: request, listeners: [listener],fileName: fileName ,
+                                 directoryName: directoryName)
         if let ui = userInfo {
             file.userInfo = ui
         }
@@ -188,9 +189,9 @@ extension CheapjackManager {
         //save the identifiers of files
         try? UserDefaults.standard.set(PropertyListEncoder().encode(Array(files.keys)), forKey: "downloadItemKeys")
     }
-
+    
     func restoredDownloadItems() -> [CheapjackFile.Identifier:CheapjackFile] {
-
+        
         let encoded = UserDefaults.standard.object(forKey: "downloadItemKeys") as! Data
         let  filesKeys:[CheapjackFile.Identifier] = try! PropertyListDecoder().decode([CheapjackFile.Identifier].self, from: encoded)
         
@@ -203,7 +204,7 @@ extension CheapjackManager {
         }
         return savedFiles
     }
-
+    
 }
 
 
@@ -221,15 +222,17 @@ extension CheapjackManager {
         }
         files = filesCopy
     }
+    
 }
 
 
 extension CheapjackManager: URLSessionDownloadDelegate {
     
+    
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         if let file = files[downloadTask.taskDescription!] {
             file.setState(.finished)
-            print(file.url?.absoluteString)
+            move(cheapjackFile: file, location: location)
             delegate?.cheapjackManager(self, didFinishDownloading: session, downloadTask: downloadTask, url: location, forFile: file)
             if let didFinishDownloadingBlock = didFinishDownloadingBlock {
                 didFinishDownloadingBlock(session, downloadTask, location, file)
@@ -281,6 +284,34 @@ extension CheapjackManager: URLSessionTaskDelegate {
             if downloadTasks.count == 0 {
                 
             }
+        }
+    }
+    
+}
+
+extension CheapjackManager {
+    static func docmentDirectoryPath () -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    }
+    
+    func move(cheapjackFile:CheapjackFile,location:URL) {
+        let directory = CheapjackManager.docmentDirectoryPath()
+        let path = directory.appendingPathComponent(cheapjackFile.directoryName!)
+        do {
+            if (!FileManager.default.fileExists(atPath: path.absoluteString)) {
+                try FileManager.default.createDirectory(at: path, withIntermediateDirectories: true, attributes: nil)
+            }
+            
+            let destinationLocation = path.appendingPathComponent(cheapjackFile.fileName!)
+            
+            if FileManager.default.fileExists(atPath: destinationLocation.path) {
+                try! FileManager.default.removeItem(at: destinationLocation)
+            }
+            
+            try FileManager.default.moveItem(at: location, to: destinationLocation)
+            
+        } catch {
+            print("Error while moving file! \(    print(error.localizedDescription))")
         }
     }
     
