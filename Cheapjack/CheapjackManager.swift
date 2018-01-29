@@ -37,6 +37,9 @@ open class CheapjackManager: NSObject {
     
     open static let sharedManager = CheapjackManager()
     
+    @objc dynamic open var numberOfPendingDownloads:Int {
+        return pendingDownloads()
+    }
     
     override init() {
         files = Dictionary<CheapjackFile.Identifier, CheapjackFile>()
