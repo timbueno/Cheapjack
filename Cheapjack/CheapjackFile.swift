@@ -67,7 +67,7 @@ open class CheapjackFile:Equatable,Codable {
         
     }
     private enum CodingKeys: String, CodingKey {
-        case identifier ,url,state,lastState,totalBytesWritten,totalBytesExpectedToWrite
+        case identifier ,url,state,lastState,totalBytesWritten,totalBytesExpectedToWrite,fileName,directoryName
         
     }
     
@@ -80,7 +80,8 @@ open class CheapjackFile:Equatable,Codable {
         lastState = try values.decode(State.self, forKey: .lastState)
         totalBytesWritten = try values.decode(Int64.self, forKey: .totalBytesWritten)
         totalBytesExpectedToWrite = try values.decode(Int64.self, forKey: .totalBytesExpectedToWrite)
-        
+        fileName = try values.decode(String.self, forKey: .fileName)
+        directoryName = try values.decode(String.self, forKey: .directoryName)
         
     }
     
@@ -93,8 +94,8 @@ open class CheapjackFile:Equatable,Codable {
         try container.encode(lastState, forKey: .lastState)
         try container.encode(totalBytesWritten, forKey: .totalBytesWritten)
         try container.encode(totalBytesExpectedToWrite, forKey: .totalBytesExpectedToWrite)
-        
-        
+        try container.encode(fileName, forKey: .fileName)
+        try container.encode(directoryName, forKey: .directoryName)
     }
     
     public typealias Identifier = String
@@ -106,8 +107,8 @@ open class CheapjackFile:Equatable,Codable {
     open var identifier: CheapjackFile.Identifier = ""
     open var url: URL? = nil
     open var request: URLRequest? = nil
-    var fileName : String? = nil
-    var directoryName : String? = nil
+    open var fileName : String? = nil
+    open var directoryName : String? = nil
     
     open var progress: Double {
         if totalBytesExpectedToWrite > 0 {
@@ -155,7 +156,8 @@ open class CheapjackFile:Equatable,Codable {
         self.totalBytesWritten = 0
         self.totalBytesExpectedToWrite = 0
         self.listeners = listeners ?? Array<CheapjackFile.Listener>()
-        self.fileName = fileName ?? identifier
+        self.fileName = fileName ??  url?.lastPathComponent
+        
         self.directoryName = directoryName ??  "Doc"
     }
     
@@ -287,3 +289,4 @@ extension State: Codable {
         }
     }
 }
+
