@@ -158,7 +158,9 @@ extension CheapjackManager {
 extension CheapjackManager {
     
     public func resumeAll() {
-        files = restoredDownloadItems()
+        guard let files = restoredDownloadItems() else {
+            return
+        }
         for file in files.values {
             resume(file)
         }
@@ -181,9 +183,11 @@ extension CheapjackManager {
         try? UserDefaults.standard.set(PropertyListEncoder().encode(file), forKey: file.identifier)
         
     }
-    func restoredDownloadItem(identifier:CheapjackFile.Identifier) -> CheapjackFile {
+    func restoredDownloadItem(identifier:CheapjackFile.Identifier) -> CheapjackFile? {
         
-        let encoded = UserDefaults.standard.object(forKey: identifier) as! Data
+        guard let encoded = UserDefaults.standard.object(forKey: identifier) as? Data else{
+            return nil
+        }
         let file = try! PropertyListDecoder().decode(CheapjackFile.self, from: encoded)
         return file
     }
@@ -193,17 +197,20 @@ extension CheapjackManager {
         try? UserDefaults.standard.set(PropertyListEncoder().encode(Array(files.keys)), forKey: "downloadItemKeys")
     }
     
-    func restoredDownloadItems() -> [CheapjackFile.Identifier:CheapjackFile] {
+    func restoredDownloadItems() -> [CheapjackFile.Identifier:CheapjackFile]? {
         
-        let encoded = UserDefaults.standard.object(forKey: "downloadItemKeys") as! Data
+        guard let encoded = UserDefaults.standard.object(forKey: "downloadItemKeys") as? Data else{
+            return nil
+        }
+        
         let  filesKeys:[CheapjackFile.Identifier] = try! PropertyListDecoder().decode([CheapjackFile.Identifier].self, from: encoded)
         
         var savedFiles:[CheapjackFile.Identifier:CheapjackFile] = [CheapjackFile.Identifier:CheapjackFile]()
         
         for key in filesKeys {
-            let encoded = UserDefaults.standard.object(forKey: key) as! Data
-            let  file = try! PropertyListDecoder().decode(CheapjackFile.self, from: encoded)
-            savedFiles[key] = file
+            if let encoded = UserDefaults.standard.object(forKey: key) as? Data,let file = try? PropertyListDecoder().decode(CheapjackFile.self, from: encoded){
+                savedFiles[key] = file
+            }
         }
         return savedFiles
     }
