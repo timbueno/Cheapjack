@@ -37,9 +37,7 @@ open class CheapjackManager: NSObject {
     
     open static let sharedManager = CheapjackManager()
     
-    @objc dynamic open var numberOfPendingDownloads:Int {
-        return pendingDownloads()
-    }
+    @objc dynamic open var numberOfPendingDownloads:Int = 0
     
     override init() {
         files = Dictionary<CheapjackFile.Identifier, CheapjackFile>()
@@ -221,6 +219,7 @@ extension CheapjackManager {
 extension CheapjackManager {
     public func remove(_ identifier: CheapjackFile.Identifier) {
         files.removeValue(forKey: identifier)
+        numberOfPendingDownloads = pendingDownloads()
     }
     
     public func remove(_ filesWithState: State) {
@@ -250,6 +249,7 @@ extension CheapjackManager: URLSessionDownloadDelegate {
             
             if deleteFileAfterComplete {
                 files.removeValue(forKey: downloadTask.taskDescription!)
+                numberOfPendingDownloads = pendingDownloads()
             }
             
         }
