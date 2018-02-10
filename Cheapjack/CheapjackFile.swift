@@ -157,7 +157,6 @@ open class CheapjackFile:Equatable,Codable {
         self.totalBytesExpectedToWrite = 0
         self.listeners = listeners ?? Array<CheapjackFile.Listener>()
         self.fileName = fileName ??  url?.lastPathComponent
-        
         self.directoryName = directoryName ??  "Doc"
     }
     

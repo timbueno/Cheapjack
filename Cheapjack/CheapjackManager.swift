@@ -112,7 +112,6 @@ extension CheapjackManager {
         file.manager = self
         files[file.identifier] = file
         
-        print(file.state)
         switch file.state {
         case .paused(let data):
             file.setState(.waiting)
