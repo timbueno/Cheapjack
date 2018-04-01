@@ -10,6 +10,7 @@ import Foundation
 
 
 public protocol CheapjackFileDelegate: class {
+    var identifier: Int { get}
     func cheapjackFile(_ file: CheapjackFile, didChangeState from: State, to: State)
     func cheapjackFile(_ file: CheapjackFile, didUpdateProgress progress: Double, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
 }
@@ -50,7 +51,7 @@ open class CheapjackFile:Equatable,Codable {
     
     // A listener may implement either of delegate and blocks.
     open class Listener {
-        
+
         public typealias DidChangeStateBlock = (_ from: State, _ to: State) -> (Void)
         public typealias DidUpdateProgressBlock = (_ progress: Double, _ totalBytesWritten: Int64, _ totalBytesExpectedToWrite: Int64) -> (Void)
         
