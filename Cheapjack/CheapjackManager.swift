@@ -218,8 +218,9 @@ extension CheapjackManager {
 
 extension CheapjackManager {
     public func remove(_ identifier: CheapjackFile.Identifier) {
-        files.removeValue(forKey: identifier)
+        cancel(identifier)
         UserDefaults.standard.removeObject(forKey: identifier)
+        files.removeValue(forKey: identifier)
         numberOfPendingDownloads = pendingDownloads()
     }
     
