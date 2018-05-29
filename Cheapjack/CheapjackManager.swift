@@ -195,7 +195,7 @@ extension CheapjackManager {
         try? UserDefaults.standard.set(PropertyListEncoder().encode(Array(files.keys)), forKey: "downloadItemKeys")
     }
     
-    func restoredDownloadItems() -> [CheapjackFile.Identifier:CheapjackFile]? {
+    public func restoredDownloadItems() -> [CheapjackFile.Identifier:CheapjackFile]? {
         
         guard let encoded = UserDefaults.standard.object(forKey: "downloadItemKeys") as? Data else{
             return nil
