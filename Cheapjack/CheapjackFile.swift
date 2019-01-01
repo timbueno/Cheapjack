@@ -51,7 +51,7 @@ open class CheapjackFile:Equatable,Codable {
     
     // A listener may implement either of delegate and blocks.
     open class Listener {
-
+        
         public typealias DidChangeStateBlock = (_ from: State, _ to: State) -> (Void)
         public typealias DidUpdateProgressBlock = (_ progress: Double, _ totalBytesWritten: Int64, _ totalBytesExpectedToWrite: Int64) -> (Void)
         
@@ -171,6 +171,11 @@ open class CheapjackFile:Equatable,Codable {
     
     public func addListener(_ listener: CheapjackFile.Listener) {
         listeners.append(listener)
+    }
+    
+    public func removeListener(_ listener: CheapjackFile.Listener) {
+        let listeners = self.listeners.filter { $0.delegate?.identifier != listener.delegate?.identifier}
+        self.listeners = listeners
     }
     
     internal func setState(_ to: State) {
