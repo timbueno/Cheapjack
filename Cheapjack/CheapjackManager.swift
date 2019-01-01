@@ -38,7 +38,7 @@ open class CheapjackManager: NSObject {
     open static let sharedManager = CheapjackManager()
     
     @objc dynamic open var numberOfPendingDownloads:Int = 0
-
+    
     override init() {
         files = Dictionary<CheapjackFile.Identifier, CheapjackFile>()
         
@@ -62,7 +62,7 @@ open class CheapjackManager: NSObject {
             file.userInfo = ui
         }
         resume(file)
-
+        
     }
     
     open func pendingDownloads() -> Int {
@@ -241,7 +241,7 @@ extension CheapjackManager: URLSessionDownloadDelegate {
     
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        if let file = files[downloadTask.taskDescription!] {
+        if let taskDescription = downloadTask.taskDescription,let file = files[taskDescription] {
             file.setState(.finished)
             move(cheapjackFile: file, location: location)
             delegate?.cheapjackManager(self, didFinishDownloading: session, downloadTask: downloadTask, url: location, forFile: file)
