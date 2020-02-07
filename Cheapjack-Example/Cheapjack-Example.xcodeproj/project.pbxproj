@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22CACEDC1B8FC577001F494B /* Cheapjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C573981B8E8D100088E47E /* Cheapjack.framework */; };
-		22CACEDD1B8FC577001F494B /* Cheapjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22C573981B8E8D100088E47E /* Cheapjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3D96EC05200D16B7008B217C /* Cheapjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D96EC06200D16B7008B217C /* Cheapjack.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AEB1F8721A8B58C300D1CFE4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB1F8711A8B58C300D1CFE4 /* AppDelegate.swift */; };
 		AEB1F8741A8B58C300D1CFE4 /* DownloadsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB1F8731A8B58C300D1CFE4 /* DownloadsTableViewCell.swift */; };
 		AEB1F8771A8B58C300D1CFE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEB1F8751A8B58C300D1CFE4 /* Main.storyboard */; };
@@ -24,7 +23,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				22CACEDD1B8FC577001F494B /* Cheapjack.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -32,7 +30,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		22C573981B8E8D100088E47E /* Cheapjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Cheapjack.framework; path = "/Users/tim/Library/Developer/Xcode/DerivedData/Cheapjack-bthxvoovdrtvkpagdjxxmufkwzaz/Build/Products/Debug-iphoneos/Cheapjack.framework"; sourceTree = "<absolute>"; };
+		3D96EC04200D10A0008B217C /* Cheapjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cheapjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D96EC06200D16B7008B217C /* Cheapjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cheapjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB1F86C1A8B58C300D1CFE4 /* Cheapjack-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cheapjack-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB1F8701A8B58C300D1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEB1F8711A8B58C300D1CFE4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -48,19 +47,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22CACEDC1B8FC577001F494B /* Cheapjack.framework in Frameworks */,
+				3D96EC05200D16B7008B217C /* Cheapjack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D96EC02200D10A0008B217C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3D96EC06200D16B7008B217C /* Cheapjack.framework */,
+				3D96EC04200D10A0008B217C /* Cheapjack.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AEB1F8631A8B58C300D1CFE4 = {
 			isa = PBXGroup;
 			children = (
-				22C573981B8E8D100088E47E /* Cheapjack.framework */,
 				AEB1F86E1A8B58C300D1CFE4 /* Cheapjack-Example */,
 				AEB1F86D1A8B58C300D1CFE4 /* Products */,
+				3D96EC02200D10A0008B217C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,12 +130,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Gurpartap Singh";
 				TargetAttributes = {
 					AEB1F86B1A8B58C300D1CFE4 = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = AHKVBQHP6Z;
+						DevelopmentTeam = 7QH458A3QD;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -208,13 +216,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -223,6 +239,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -235,11 +252,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -251,13 +269,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -265,15 +291,18 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -284,12 +313,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7QH458A3QD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Cheapjack-cbvlnqogbdcjbubhsnbenbjlkvsi/Build/Products/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = "Cheapjack-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -303,12 +333,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7QH458A3QD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Cheapjack-cbvlnqogbdcjbubhsnbenbjlkvsi/Build/Products/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = "Cheapjack-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gurpartap.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
